@@ -1,0 +1,24 @@
+Bug 1 output:
+Valor total: 18,00
+
+Bug 2 output:
+Valor total: 60,00
+
+Bug 3 output:
+Valor total: 382,40
+
+Bug 4 output:
+// Cliente 1
+Valor total: 90,00
+// Cliente 2
+Valor total: 22,50
+
+Bug 5 output:
+Valor total: 7,65
+
+Bug 6 output:
+// Cliente 1
+Valor total: 90,00
+// Cliente 2
+Cozinha fechada!
+Reposição indisponível de sanduiche, quantidade restante em estoque é de 0.
