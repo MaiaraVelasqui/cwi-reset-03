@@ -2,15 +2,15 @@
 public class Registradora {
 
     public static void main(String[] args) {
-       primeiroBug();
-
-       segundoBug();
-
-       terceiroBug();
-
-       quartoBug();
+//              primeiroBug();
 //
-//        quintoBug();
+//       segundoBug();
+//
+//      terceiroBug();
+//
+//          quartoBug();
+//
+        quintoBug();
 //
 //        sextoBug();
     }

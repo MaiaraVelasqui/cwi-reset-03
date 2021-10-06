@@ -8,6 +8,7 @@ Bug 3 output:
 Valor total: 382,40
 
 Bug 4 output:
+// rodou o preço corretamente, mas não descontava quantidade no estoque
 // Cliente 1
 Valor total: 90,00
 // Cliente 2
