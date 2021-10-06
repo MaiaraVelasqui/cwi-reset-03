@@ -2,13 +2,13 @@
 public class Registradora {
 
     public static void main(String[] args) {
- //      primeiroBug();
+       primeiroBug();
 
-   // segundoBug();
+       segundoBug();
 
-      terceiroBug();
-//
-//        quartoBug();
+       terceiroBug();
+
+       quartoBug();
 //
 //        quintoBug();
 //
@@ -17,7 +17,7 @@ public class Registradora {
 
     private static double registrarItem(String item, int quantidade) {
         double precoItem = RelacaoPesoPreco.retornaPrecoProduto(item, quantidade);
-
+        ItensPorQuantidade.diminuirQtdeItem(item,quantidade);
         if (QuantidadeMinimaItem.precisaReposicao(item)) {
             if ("pao".equals(item) || "sanduiche".equals(item) || "torta".equals(item)) {
                 if (!DataProjeto.cozinhaEmFuncionamento()) {
