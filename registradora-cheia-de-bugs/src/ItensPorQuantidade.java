@@ -35,6 +35,12 @@ public class ItensPorQuantidade {
         if ("sanduiche".equals(item)) {
             return sanduiche;
         }
+        if ("cafe".equals(item)){
+            return cafe;
+        }
+        if ("leite".equals(item)){
+            return leite;
+        }
 
         return 0;
     }

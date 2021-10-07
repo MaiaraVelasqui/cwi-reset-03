@@ -2,21 +2,21 @@
 public class Registradora {
 
     public static void main(String[] args) {
-//              primeiroBug();
+//      primeiroBug();
 //
-//       segundoBug();
+//      segundoBug();
 //
 //      terceiroBug();
 //
-//          quartoBug();
+//      quartoBug();
 //
-//        quintoBug();
+//      quintoBug();
 //
-       sextoBug();
+//      sextoBug();
     }
 
     private static double registrarItem(String item, int quantidade) {
-        if (ItensPorQuantidade.getQtdeItem(item) >= quantidade) {
+        if ("leite".equals(item) || "cafe".equals(item) || ItensPorQuantidade.getQtdeItem(item) >= quantidade) {
             double precoItem = RelacaoPesoPreco.retornaPrecoProduto(item, quantidade);
             ItensPorQuantidade.diminuirQtdeItem(item,quantidade);
             if (QuantidadeMinimaItem.precisaReposicao(item)) {
@@ -35,7 +35,7 @@ public class Registradora {
             return precoItem;
         }
 
-        System.out.println("Cozinha fechada! Reposição indisponível de sanduiche, quantidade restante em estoque é de " + ItensPorQuantidade.getQtdeItem(item) );
+        System.out.println("Reposição indisponível de sanduiche, quantidade restante em estoque é de " + ItensPorQuantidade.getQtdeItem(item) );
         return 0.0;
     }
 
