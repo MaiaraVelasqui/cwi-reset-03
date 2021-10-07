@@ -10,28 +10,33 @@ public class Registradora {
 //
 //          quartoBug();
 //
-        quintoBug();
+//        quintoBug();
 //
-//        sextoBug();
+       sextoBug();
     }
 
     private static double registrarItem(String item, int quantidade) {
-        double precoItem = RelacaoPesoPreco.retornaPrecoProduto(item, quantidade);
-        ItensPorQuantidade.diminuirQtdeItem(item,quantidade);
-        if (QuantidadeMinimaItem.precisaReposicao(item)) {
-            if ("pao".equals(item) || "sanduiche".equals(item) || "torta".equals(item)) {
-                if (!DataProjeto.cozinhaEmFuncionamento()) {
-                    System.out.println("Cozinha fechada!");
+        if (ItensPorQuantidade.getQtdeItem(item) >= quantidade) {
+            double precoItem = RelacaoPesoPreco.retornaPrecoProduto(item, quantidade);
+            ItensPorQuantidade.diminuirQtdeItem(item,quantidade);
+            if (QuantidadeMinimaItem.precisaReposicao(item)) {
+                if ("pao".equals(item) || "sanduiche".equals(item) || "torta".equals(item)) {
+                    if (!DataProjeto.cozinhaEmFuncionamento()) {
+                        System.out.println("Cozinha fechada!");
+                    } else {
+                        ReposicaoCozinha.reporItem(item);
+                    }
                 }
-                ReposicaoCozinha.reporItem(item);
-            }
 
-            if ("leite".equals(item) || "cafe".equals(item)) {
-                ReposicaoFornecedor.reporItem(item);
+                if ("leite".equals(item) || "cafe".equals(item)) {
+                    ReposicaoFornecedor.reporItem(item);
+                }
             }
+            return precoItem;
         }
 
-        return precoItem;
+        System.out.println("Cozinha fechada! Reposição indisponível de sanduiche, quantidade restante em estoque é de " + ItensPorQuantidade.getQtdeItem(item) );
+        return 0.0;
     }
 
     private static void primeiroBug() {
