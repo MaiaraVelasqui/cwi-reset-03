@@ -5,6 +5,7 @@ import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Diretor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class FakeDatabase {
 
@@ -25,5 +26,10 @@ public class FakeDatabase {
 
     public List<Diretor> recuperaDiretores() {
         return diretores;
+    }
+
+    public Integer gerarId(){
+        Random gerador = new Random();
+        return gerador.nextInt();
     }
 }
