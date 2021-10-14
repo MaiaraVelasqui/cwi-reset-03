@@ -18,4 +18,10 @@ public class Pessoa {
     public String getNome() {
         return nome;
     }
+
+    public Integer getId() {return id;}
+
+    public LocalDate getDataNascimento() {return dataNascimento;}
+
+    public Integer getAnoInicioAtividade() {return anoInicioAtividade;}
 }

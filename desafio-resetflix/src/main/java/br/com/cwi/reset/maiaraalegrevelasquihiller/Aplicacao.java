@@ -27,6 +27,12 @@ public class Aplicacao {
         Integer anoInicioAtividade = 1986;
        AtorRequest atorRequest = new AtorRequest(nome, dataNascimento, statusCarreira, anoInicioAtividade);
 
+       AtorRequest atorRequest1 = new AtorRequest("Joseph Jason Momoa",LocalDate.of(1979, 8,1),StatusCarreira.EM_ATIVIDADE,1999);
+       AtorRequest atorRequest2 = new AtorRequest("Emilia Isobel Clarke", LocalDate.of(1986,10,23),StatusCarreira.EM_ATIVIDADE,2011);
+       AtorRequest atorRequest3 = new AtorRequest("Antonio de Carvalho Barbosa", LocalDate.of(1948,8,25),StatusCarreira.APOSENTADO, 1977);
+       AtorRequest atorRequest4 = new AtorRequest("Charles CHaplin", LocalDate.of(1889, 4,16),StatusCarreira.APOSENTADO, 1914);
+
+
         DiretorRequest diretorRequest = new DiretorRequest("Steven Spielberg", LocalDate.of(1946,9,18),1971);
 
 
@@ -34,6 +40,13 @@ public class Aplicacao {
 
        try {
            atorService.criarAtor(atorRequest);
+           atorService.criarAtor(atorRequest1);
+           atorService.criarAtor(atorRequest2);
+           atorService.criarAtor(atorRequest3);
+           atorService.criarAtor(atorRequest4);
+
+           System.out.println(atorService.listarAtoresEmAtividade("omoa"));
+
            diretorService.criarDiretor(diretorRequest);
        } catch (CampoObrigatorioException e){
            System.out.println(e.getMessage());

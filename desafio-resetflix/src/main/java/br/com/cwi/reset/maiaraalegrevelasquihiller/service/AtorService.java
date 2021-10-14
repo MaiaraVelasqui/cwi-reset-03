@@ -2,8 +2,13 @@ package br.com.cwi.reset.maiaraalegrevelasquihiller.service;
 
 import br.com.cwi.reset.maiaraalegrevelasquihiller.FakeDatabase;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Ator;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.AtorEmAtividade;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.StatusCarreira;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.CampoObrigatorioException;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.AtorRequest;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AtorService {
 
@@ -33,4 +38,24 @@ public class AtorService {
           fakeDatabase.persisteAtor(ator);
      }
 
+
+     public List<AtorEmAtividade> listarAtoresEmAtividade(String filtroNome){
+          List<AtorEmAtividade> atoresEmAtividade = new ArrayList<>();
+          List<Ator> atores = fakeDatabase.recuperaAtores();
+          for (Ator ator : atores) {
+               if (StatusCarreira.EM_ATIVIDADE == ator.getStatusCarreira() ){
+                    if (filtroNome != null){
+                         if (ator.getNome().contains(filtroNome)) {
+                              AtorEmAtividade atorEmAtividade = new AtorEmAtividade(ator.getId(), ator.getNome(), ator.getDataNascimento());
+                              atoresEmAtividade.add(atorEmAtividade);
+                         }
+                    }else {
+                         AtorEmAtividade atorEmAtividade = new AtorEmAtividade(ator.getId(), ator.getNome(), ator.getDataNascimento());
+                         atoresEmAtividade.add(atorEmAtividade);
+                    }
+               }
+
+          }
+          return atoresEmAtividade;
+     }
 }
