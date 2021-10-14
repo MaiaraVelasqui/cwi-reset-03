@@ -5,6 +5,8 @@ import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Ator;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.AtorEmAtividade;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.StatusCarreira;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.CampoObrigatorioException;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.FiltroNaoEncontradoException;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.SemAtorCadastradoException;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.AtorRequest;
 
 import java.util.ArrayList;
@@ -39,9 +41,12 @@ public class AtorService {
      }
 
 
-     public List<AtorEmAtividade> listarAtoresEmAtividade(String filtroNome){
+     public List<AtorEmAtividade> listarAtoresEmAtividade(String filtroNome) throws SemAtorCadastradoException, FiltroNaoEncontradoException {
           List<AtorEmAtividade> atoresEmAtividade = new ArrayList<>();
           List<Ator> atores = fakeDatabase.recuperaAtores();
+          if (atores.isEmpty()) {
+               throw new SemAtorCadastradoException("Nenhum ator cadastrado, favor cadastar atores.");
+          }
           for (Ator ator : atores) {
                if (StatusCarreira.EM_ATIVIDADE == ator.getStatusCarreira() ){
                     if (filtroNome != null){
@@ -55,6 +60,12 @@ public class AtorService {
                     }
                }
 
+          }
+
+          if (filtroNome != null){
+               if (atoresEmAtividade.isEmpty()) {
+                    throw new FiltroNaoEncontradoException("Ator não encontrato com o filtro " +  filtroNome + " favor informar outro filtro.");
+               }
           }
           return atoresEmAtividade;
      }
