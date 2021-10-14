@@ -36,7 +36,9 @@ public class Aplicacao {
 
 
         DiretorRequest diretorRequest = new DiretorRequest("Steven Spielberg", LocalDate.of(1946,9,18),1971);
-
+        DiretorRequest diretorRequest1 = new DiretorRequest("João Alfredo Santos", LocalDate.of(1983,5,12),2010);
+        DiretorRequest diretorRequest2 = new DiretorRequest("Ana Clara Fonseca", LocalDate.of(1991,3,28),2018);
+        DiretorRequest diretorRequest3 = new DiretorRequest("Antonieta Nunes", LocalDate.of(1985, 7, 19), 2005);
 
 
 
@@ -50,22 +52,25 @@ public class Aplicacao {
            System.out.println(atorService.listarAtoresEmAtividade("omoa"));
 
            diretorService.criarDiretor(diretorRequest);
-       } catch (CampoObrigatorioException e){
-           System.out.println(e.getMessage());
-       } catch (SemCadastroException e) {
-           System.out.println(e.getMessage());
-       }catch (FiltroNaoEncontradoException e){
+           diretorService.criarDiretor(diretorRequest1);
+           diretorService.criarDiretor(diretorRequest2);
+           diretorService.criarDiretor(diretorRequest3);
+
+           System.out.println(diretorService.listarDiretores(null));
+           System.out.println(diretorService.listarDiretores("ao"));
+       } catch (CampoObrigatorioException | SemCadastroException | FiltroNaoEncontradoException e){
            System.out.println(e.getMessage());
        }
-
 
 
         List<Ator> atores = fakeDatabase.recuperaAtores();
        List<Diretor> diretores = fakeDatabase.recuperaDiretores();
 
-        System.out.println("Deve conter 1 ator, quantidade encontrada: " + atores.size());
+        System.out.println("Deve conter 5 ator, quantidade encontrada: " + atores.size());
         System.out.println("Primeiro ator deve ser 'Will Smith', valor encontrado: " + atores.get(0).getNome());
-        System.out.println("Deve conter 1 diretor, quantidade encontrada: " + diretores.size());
+        System.out.println("Deve conter 4 diretor, quantidade encontrada: " + diretores.size());
         System.out.println("O primeiro diretor deve ser ' Steven Spielberg', valor encontrado: " + diretores.get(0).getNome());
+
+
     }
 }
