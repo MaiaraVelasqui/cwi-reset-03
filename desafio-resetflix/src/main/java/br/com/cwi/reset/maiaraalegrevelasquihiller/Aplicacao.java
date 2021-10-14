@@ -5,7 +5,7 @@ import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Diretor;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.StatusCarreira;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.CampoObrigatorioException;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.FiltroNaoEncontradoException;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.SemAtorCadastradoException;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.SemCadastroException;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.AtorRequest;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.DiretorRequest;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.service.AtorService;
@@ -52,7 +52,7 @@ public class Aplicacao {
            diretorService.criarDiretor(diretorRequest);
        } catch (CampoObrigatorioException e){
            System.out.println(e.getMessage());
-       } catch (SemAtorCadastradoException e) {
+       } catch (SemCadastroException e) {
            System.out.println(e.getMessage());
        }catch (FiltroNaoEncontradoException e){
            System.out.println(e.getMessage());

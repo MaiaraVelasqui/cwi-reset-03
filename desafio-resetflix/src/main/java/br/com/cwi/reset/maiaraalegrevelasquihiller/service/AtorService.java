@@ -3,10 +3,11 @@ package br.com.cwi.reset.maiaraalegrevelasquihiller.service;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.FakeDatabase;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Ator;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.AtorEmAtividade;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Diretor;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.StatusCarreira;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.CampoObrigatorioException;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.FiltroNaoEncontradoException;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.SemAtorCadastradoException;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.SemCadastroException;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.AtorRequest;
 
 import java.util.ArrayList;
@@ -41,11 +42,11 @@ public class AtorService {
      }
 
 
-     public List<AtorEmAtividade> listarAtoresEmAtividade(String filtroNome) throws SemAtorCadastradoException, FiltroNaoEncontradoException {
+     public List<AtorEmAtividade> listarAtoresEmAtividade(String filtroNome) throws SemCadastroException, FiltroNaoEncontradoException {
           List<AtorEmAtividade> atoresEmAtividade = new ArrayList<>();
           List<Ator> atores = fakeDatabase.recuperaAtores();
           if (atores.isEmpty()) {
-               throw new SemAtorCadastradoException("Nenhum ator cadastrado, favor cadastar atores.");
+               throw new SemCadastroException("Nenhum ator cadastrado, favor cadastar atores.");
           }
           for (Ator ator : atores) {
                if (StatusCarreira.EM_ATIVIDADE == ator.getStatusCarreira() ){
@@ -68,5 +69,23 @@ public class AtorService {
                }
           }
           return atoresEmAtividade;
+     }
+     public Ator consultarAtor(Integer id) throws FiltroNaoEncontradoException {
+          List<Ator> atores = fakeDatabase.recuperaAtores();
+          for (Ator ator : atores) {
+               if (ator.getId() == id) {
+                    return ator;
+               }
+          }
+
+          throw new FiltroNaoEncontradoException("Nenhum ator encontrado com o parâmetro id= " + id + ", favor verifique os parâmetros informados.");
+     }
+     public List<Ator> consultarAtores() throws SemCadastroException {
+          List<Ator> atores = fakeDatabase.recuperaAtores();
+          if (atores.isEmpty()) {
+               throw new SemCadastroException("Nenhum ator cadastrado, favor cadastar atores.");
+
+          }
+          return atores;
      }
 }
