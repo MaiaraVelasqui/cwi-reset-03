@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "c55d4414-4f9c-4949-831c-8bbfb55aa927",
+		"name": "Reset-aula03 Exercicio FilmeController",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cadastrar Filme",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Interestelar 2\",\r\n    \"descricao\": \"Filme muito bom\",\r\n    \"anoLancamento\": 2014,\r\n    \"avaliacao\": 5.0,\r\n    \"duracao\": 120,\r\n    \"diretor\":{\r\n        \"quantidadeFilmes\": 20,\r\n        \"nome\":\"Nolan\",\r\n        \"genero\": \"MASCULINO\",\r\n        \"dataNascimento\": \"1960-04-04\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8087/api/filme"
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar todos os filmes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:8087/api/filme"
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar por nome",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": null
+			},
+			"response": []
+		},
+		{
+			"name": "Atualizar filme",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nome\": \"Interestelar \",\r\n    \"descricao\": \"Filme sobre cosmos\",\r\n    \"anoLancamento\": 2014,\r\n    \"avaliacao\": 4.9,\r\n    \"duracao\": 120,\r\n    \"diretor\":{\r\n        \"quantidadeFilmes\": 20,\r\n        \"nome\":\"Nolan\",\r\n        \"genero\": \"MASCULINO\",\r\n        \"dataNascimento\": \"1960-04-04\"\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8087/api/filme"
+			},
+			"response": []
+		},
+		{
+			"name": "Deletar filme",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "localhost:8087/api/filme/Interestelar"
+			},
+			"response": []
+		}
+	]
+}

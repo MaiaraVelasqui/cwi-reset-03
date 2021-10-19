@@ -1,4 +1,4 @@
-package br.com.cwi.reset.projeto1;
+package br.com.cwi.reset.primeiroprojetospring.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

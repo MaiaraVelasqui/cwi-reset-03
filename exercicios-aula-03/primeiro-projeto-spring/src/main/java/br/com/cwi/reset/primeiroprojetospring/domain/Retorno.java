@@ -1,4 +1,4 @@
-package br.com.cwi.reset.projeto1;
+package br.com.cwi.reset.primeiroprojetospring.domain;
 
 public class Retorno {
     String mensagem;
