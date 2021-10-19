@@ -1,16 +1,26 @@
 package br.com.cwi.reset.maiaraalegrevelasquihiller;
 
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Ator;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Diretor;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class FakeDatabase {
 
+    private static FakeDatabase fakeDatabase = new FakeDatabase();
+
+    public static FakeDatabase getInstance() {
+        return fakeDatabase;
+    }
+
+    private FakeDatabase() {
+    }
+
     private List<Ator> atores = new ArrayList<>();
     private List<Diretor> diretores = new ArrayList<>();
+    private List<Estudio> estudios = new ArrayList<>();
+    private List<Filme> filmes = new ArrayList<>();
+    private List<PersonagemAtor> personagens = new ArrayList<>();
 
     public void persisteAtor(Ator ator) {
         atores.add(ator);
@@ -28,8 +38,29 @@ public class FakeDatabase {
         return diretores;
     }
 
-    public Integer gerarId(){
-        Random gerador = new Random();
-        return gerador.nextInt();
+    public void persisteEstudio(Estudio estudio) {
+        estudios.add(estudio);
     }
+
+    public List<Estudio> recuperaEstudios() {
+        return estudios;
+    }
+
+    public void persisteFilme(Filme filme) {
+        filmes.add(filme);
+    }
+
+    public List<Filme> recuperaFilmes() {
+        return filmes;
+    }
+
+    public void persistePersonagem(PersonagemAtor personagemAtor) {
+        personagens.add(personagemAtor);
+    }
+
+    public List<PersonagemAtor> recuperaPersonagens() {
+        return personagens;
+    }
+
+
 }

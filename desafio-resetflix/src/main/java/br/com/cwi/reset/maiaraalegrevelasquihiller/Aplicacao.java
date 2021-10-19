@@ -1,21 +1,37 @@
 package br.com.cwi.reset.maiaraalegrevelasquihiller;
 
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Ator;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Diretor;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.StatusCarreira;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.CampoObrigatorioException;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.FiltroNaoEncontradoException;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.SemCadastroException;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.request.AtorRequest;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.request.DiretorRequest;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.service.AtorService;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.service.DiretorService;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+@SpringBootApplication
 public class Aplicacao {
+
+    public static void main(String[] args) {
+        SpringApplication.run(Aplicacao.class, args);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*public class Aplicacao {
 
     public static void main(String[] args) {
         FakeDatabase fakeDatabase = new FakeDatabase();
@@ -73,4 +89,4 @@ public class Aplicacao {
 
 
     }
-}
+}*/

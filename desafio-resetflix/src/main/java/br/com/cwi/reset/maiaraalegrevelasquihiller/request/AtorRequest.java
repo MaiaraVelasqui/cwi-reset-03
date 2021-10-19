@@ -1,6 +1,6 @@
 package br.com.cwi.reset.maiaraalegrevelasquihiller.request;
 
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.StatusCarreira;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.model.StatusCarreira;
 
 import java.time.LocalDate;
 

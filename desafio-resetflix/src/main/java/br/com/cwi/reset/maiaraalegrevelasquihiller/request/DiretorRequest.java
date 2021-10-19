@@ -1,7 +1,5 @@
 package br.com.cwi.reset.maiaraalegrevelasquihiller.request;
 
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.StatusCarreira;
-
 import java.time.LocalDate;
 
 public class DiretorRequest {

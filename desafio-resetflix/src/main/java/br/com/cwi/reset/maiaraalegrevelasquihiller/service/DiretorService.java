@@ -1,20 +1,17 @@
 package br.com.cwi.reset.maiaraalegrevelasquihiller.service;
 
+
 import br.com.cwi.reset.maiaraalegrevelasquihiller.FakeDatabase;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Ator;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.AtorEmAtividade;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.Diretor;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.dominio.StatusCarreira;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.CampoObrigatorioException;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.FiltroNaoEncontradoException;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.erros.SemCadastroException;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.exception.*;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Diretor;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.DiretorRequest;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.validator.BasicInfoRequiredValidator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DiretorService {
-
 
      private FakeDatabase fakeDatabase;
 
@@ -22,57 +19,64 @@ public class DiretorService {
           this.fakeDatabase = fakeDatabase;
      }
 
-     public void criarDiretor(DiretorRequest diretorRequest) throws CampoObrigatorioException {
-          if (diretorRequest.getNome() == null || diretorRequest.getNome() == ""){
-               throw new CampoObrigatorioException("Campo obrigatório não informado. Favor informar o campo nome.");
-          }
-          if (diretorRequest.getDataNascimento() == null){
-               throw new CampoObrigatorioException("Campo obrigatório não informado. Favor informar o campo data de nascimento.");
-          }
-          if (diretorRequest.getAnoInicioAtividade() == null){
-               throw new CampoObrigatorioException("Campo obrigatório não informado. Favor informar o campo ano início atividade.");
+     public void cadastrarDiretor(final DiretorRequest diretorRequest) throws Exception {
+          new BasicInfoRequiredValidator().accept(diretorRequest.getNome(), diretorRequest.getDataNascimento(), diretorRequest.getAnoInicioAtividade(), TipoDominioException.DIRETOR);
+
+          final List<Diretor> diretoresCadastrados = fakeDatabase.recuperaDiretores();
+
+          for (Diretor diretorCadastrado : diretoresCadastrados) {
+               if (diretorCadastrado.getNome().equalsIgnoreCase(diretorRequest.getNome())) {
+                    throw new CadastroDuplicadoException(TipoDominioException.DIRETOR.getSingular(), diretorRequest.getNome());
+               }
           }
 
-          Diretor diretor = new Diretor(fakeDatabase.gerarId(),diretorRequest.getNome(),diretorRequest.getDataNascimento(),
-                  diretorRequest.getAnoInicioAtividade());
+          final Integer idGerado = diretoresCadastrados.size() + 1;
+
+          final Diretor diretor = new Diretor(idGerado, diretorRequest.getNome(), diretorRequest.getDataNascimento(), diretorRequest.getAnoInicioAtividade());
+
           fakeDatabase.persisteDiretor(diretor);
      }
 
-     public List<Diretor> listarDiretores(String filtroNome) throws SemCadastroException, FiltroNaoEncontradoException {
-          List<Diretor> listaRetorno = new ArrayList<>();
-          List<Diretor> diretores = fakeDatabase.recuperaDiretores();
-          if (diretores.isEmpty()) {
-               throw new SemCadastroException("Nenhum diretor cadastrado, favor cadastar diretores.");
+     public List<Diretor> listarDiretores(final String filtroNome) throws Exception {
+          final List<Diretor> diretoresCadastrados = fakeDatabase.recuperaDiretores();
+
+          if (diretoresCadastrados.isEmpty()) {
+               throw new ListaVaziaException(TipoDominioException.DIRETOR.getSingular(), TipoDominioException.DIRETOR.getPlural());
           }
-          for (Diretor diretor : diretores) {
-               if (filtroNome != null){
-                    if (diretor.getNome().contains(filtroNome)) {
-                         listaRetorno.add(diretor);
+
+          final List<Diretor> retorno = new ArrayList<>();
+
+          if (filtroNome != null) {
+               for (Diretor diretor : diretoresCadastrados) {
+                    final boolean containsFilter = diretor.getNome().toLowerCase(Locale.ROOT).contains(filtroNome.toLowerCase(Locale.ROOT));
+                    if (containsFilter) {
+                         retorno.add(diretor);
                     }
-               }else {
-                    listaRetorno.add(diretor);
                }
-
-
+          } else {
+               retorno.addAll(diretoresCadastrados);
           }
 
-          if (filtroNome != null){
-               if (listaRetorno.isEmpty()) {
-                    throw new FiltroNaoEncontradoException("Diretor não encontrato com o filtro " +  filtroNome + " favor informar outro filtro.");
-               }
+          if (retorno.isEmpty()) {
+               throw new FiltroNomeNaoEncontrado("Diretor", filtroNome);
           }
-          return listaRetorno;
+
+          return retorno;
      }
 
-     public Diretor consultarDiretor(Integer id) throws FiltroNaoEncontradoException {
-          List<Diretor> diretores = fakeDatabase.recuperaDiretores();
+     public Diretor consultarDiretor(final Integer id) throws Exception {
+          if (id == null) {
+               throw new IdNaoInformado();
+          }
+
+          final List<Diretor> diretores = fakeDatabase.recuperaDiretores();
+
           for (Diretor diretor : diretores) {
-               if (diretor.getId() == id) {
+               if (diretor.getId().equals(id)) {
                     return diretor;
                }
           }
 
-          throw new FiltroNaoEncontradoException("Nenhum diretor encontrado com o parâmetro id= " + id + ", favor verifique os parâmetros informados.");
+          throw new ConsultaIdInvalidoException(TipoDominioException.DIRETOR.getSingular(), id);
      }
-
 }

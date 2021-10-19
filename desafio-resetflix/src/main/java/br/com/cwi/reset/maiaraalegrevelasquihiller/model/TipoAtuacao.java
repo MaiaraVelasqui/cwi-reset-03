@@ -1,4 +1,4 @@
-package br.com.cwi.reset.maiaraalegrevelasquihiller.dominio;
+package br.com.cwi.reset.maiaraalegrevelasquihiller.model;
 
 public enum TipoAtuacao {
     PRINCIPAL,
