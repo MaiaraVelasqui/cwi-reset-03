@@ -23,7 +23,7 @@ public class DiretorController {
         this.diretorService.cadastrarDiretor(diretorRequest);
     }
 
-    @GetMapping("/diretores")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Diretor> listarDiretores(@RequestParam String filtroNome)throws Exception{
         return this.diretorService.listarDiretores(filtroNome);
