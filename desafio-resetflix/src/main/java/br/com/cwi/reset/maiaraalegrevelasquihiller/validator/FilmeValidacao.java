@@ -22,6 +22,9 @@ public class FilmeValidacao {
         if (filmeRequest.getGeneros() == null) {
             throw new GeneroNaoInformadoException();
         }
+        if (filmeRequest.getGeneros().isEmpty()) {
+            throw new NenhumGeneroInformadoException("Deve ser informado pelo menos um gênero para o cadastro do filme.");
+        }
         if (filmeRequest.getIdEstudio() == null) {
             throw new IdNaoInformado();
         }
