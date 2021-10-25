@@ -1,8 +1,6 @@
 package br.com.cwi.reset.projeto1.controller;
 
 import br.com.cwi.reset.projeto1.domain.Pet;
-import br.com.cwi.reset.projeto1.repository.PetRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +13,6 @@ import java.util.List;
 public class PetController {
 
     private static List<Pet> pets = new ArrayList<>();
-
-    @Autowired
-    private PetRepository repository;
 
     @GetMapping
     public List<Pet> getPet() {
@@ -46,7 +41,7 @@ public class PetController {
 
     @PostMapping
     public Pet cadastrarPet(@RequestBody Pet pet) {
-        repository.save(pet);
+        pets.add(pet);
         return pet;
     }
 

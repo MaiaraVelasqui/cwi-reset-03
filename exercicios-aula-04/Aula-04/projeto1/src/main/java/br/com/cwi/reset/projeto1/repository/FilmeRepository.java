@@ -2,43 +2,17 @@ package br.com.cwi.reset.projeto1.repository;
 
 import br.com.cwi.reset.projeto1.domain.Filme;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class FilmeRepository {
+public interface FilmeRepository {
 
-    private List<Filme> filmes = new ArrayList<>();
+    Filme findByNome(String nome);
 
-    public Filme findByNome(String nome) {
-        for (Filme filme : filmes) {
-            if (filme.getNome().equals(nome)) {
-                return filme;
-            }
-        }
-        return null;
-    }
+    Filme save(Filme filme);
 
-    public Filme save(Filme filme) {
-        filmes.add(filme);
-        return filme;
-    }
+    void delete(Filme filme);
 
-    public void delete(Filme filme) {
-        filmes.remove(filme);
-    }
+    Filme update(Filme filme);
 
-    public Filme update(Filme filme) {
-        Filme filmeExistente = findByNome(filme.getNome());
-
-        if (filmeExistente != null) {
-            filmes.remove(filmeExistente);
-            filmes.add(filme);
-            return filme;
-        }
-        return null;
-    }
-    
-    public List<Filme> findAll() {
-        return filmes;
-    }
+    List<Filme> findAll();
 }

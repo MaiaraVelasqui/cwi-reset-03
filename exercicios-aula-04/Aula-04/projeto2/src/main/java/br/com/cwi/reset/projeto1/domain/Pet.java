@@ -43,4 +43,12 @@ public class Pet {
     public void setEspecie(Especie especie) {
         this.especie = especie;
     }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 }

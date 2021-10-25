@@ -15,7 +15,6 @@ import java.util.List;
 @RequestMapping("/filme")
 public class FilmeController {
 
-    private static List<Filme> filmes = new ArrayList<>();
 
     @Autowired
     private FilmeService filmeService;
@@ -33,6 +32,11 @@ public class FilmeController {
     @GetMapping
     public List<Filme> consultarTodos() {
         return filmeService.listarTodos();
+    }
+
+    @GetMapping("/by-diretor/{nomeDiretor}")
+    public List<Filme> findByDiretor(@PathVariable String nomeDiretor) {
+        return filmeService.buscarPorDiretor(nomeDiretor);
     }
 
     @GetMapping("/{nome}")

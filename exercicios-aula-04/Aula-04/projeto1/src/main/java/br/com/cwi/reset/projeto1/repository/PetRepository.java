@@ -1,35 +1,22 @@
 package br.com.cwi.reset.projeto1.repository;
 
 import br.com.cwi.reset.projeto1.domain.Pet;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class PetRepository {
-    private List<Pet> pets = new ArrayList<>();
+@Repository
+public interface PetRepository extends CrudRepository<Pet, Integer> {
 
-    public Pet findByNome(String nome) {
-        for (Pet pet : pets) {
-            if (pet.getNome().equals(nome)) {
-                return pet;
-            }
-        }
-        return null;
-    }
+    Pet buscarPeloNome(String nome);
 
-    public void save(Pet pet){
-        pets.add(pet);
-    }
+    Pet salvar(Pet pet);
 
-    public List<Pet> getPets() {
-        return pets;
-    }
+    void deletar(Pet pet);
 
-    public void remove(Pet pet) {
-        pets.remove(pet);
-    }
+    Pet atualizar(Pet pet);
 
-    public void add(Pet pet) {
-        pets.add(pet);
-    }
+    List<Pet> listarTodos();
+
 }
