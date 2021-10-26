@@ -9,18 +9,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/ator")
 public class AtorController {
+
     @Autowired
-    private AtorService atorService;
+    private AtorService service;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public Ator cadastrarAtor(@RequestBody Ator ator) throws AtorJaExistenteException {
-        return atorService.salvar(ator);
+    public Ator salvar(@RequestBody Ator ator) {
+        return service.salvar(ator);
     }
 
+    @GetMapping
+    public List<Ator> listarTodos() {
+        return service.listarTodos();
+    }
 
+    @GetMapping("/{nome}")
+    public Ator buscarPorNome(@PathVariable String nome) {
+        return service.procurarPorNome(nome);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletar(@PathVariable Integer id) {
+        service.deletar(id);
+    }
+
+    @GetMapping("/by-filter")
+    public List<Ator> buscarPorFiltro(@RequestParam Integer numeroOscars, Integer anoNascimento) {
+        return service.buscarPorFiltro(numeroOscars, anoNascimento);
+    }
 
 }

@@ -10,46 +10,34 @@ import br.com.cwi.reset.projeto1.repository.AtorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class AtorService {
+
     @Autowired
     private AtorRepository repository;
 
-    public Ator buscarPeloNome(String nome) throws AtorNaoExistenteException {
-        Ator ator = repository.findByNome(nome);
-
-        if (ator == null) {
-            throw new AtorNaoExistenteException("Ator com o nome  " + nome + " não existe");
-        }
-
-        return ator;
-    }
-
-    public Ator salvar(Ator ator) throws AtorJaExistenteException {
-        Ator atorJaCadastrado = repository.findByNome(ator.getNome());
-
-        if (atorJaCadastrado != null) {
-            throw new AtorJaExistenteException("Ator com o nome " + ator.getNome() + " já existe");
-        }
-
+    public Ator salvar(Ator ator) {
         return repository.save(ator);
     }
 
-    public void delete(String nome) throws AtorNaoExistenteException {
-        Ator ator = repository.findByNome(nome);
-
-        if (ator == null) {
-            throw new AtorNaoExistenteException("Ator com o nome " + nome + " não existe");
-        }
-
-        repository.delete(ator);
+    public Ator procurarPorNome(String nome) {
+        return repository.findByNome(nome);
     }
 
-    public List<Ator> buscarPorNumeroDeOscar(Integer numeroOscars) {
-        return repository.findByNumeroOscars(numeroOscars);
+    public List<Ator> listarTodos() {
+        return (List<Ator>) repository.findAll();
+    }
 
+    public void deletar(Integer id) {
+        repository.deleteById(id);
+    }
+
+    public List<Ator> buscarPorFiltro(Integer oscars, Integer anoNascimento) {
+        LocalDate dataNascimento = LocalDate.of(anoNascimento, 1, 1);
+        return repository.findByNumeroOscarsGreaterThanAndDataNascimentoGreaterThan(oscars, dataNascimento);
     }
 
 
