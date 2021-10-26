@@ -14,5 +14,5 @@ public enum Genero {
     POLICIAL,
     ROMANCE,
     TERROR;
-
 }
+

@@ -16,6 +16,9 @@ public class Estudio {
     @Enumerated(EnumType.STRING)
     private StatusAtividade statusAtividade;
 
+    public Estudio() {
+    }
+
     public Estudio(Integer id, String nome, String descricao, LocalDate dataCriacao, StatusAtividade statusAtividade) {
         this.id = id;
         this.nome = nome;
@@ -24,25 +27,45 @@ public class Estudio {
         this.statusAtividade = statusAtividade;
     }
 
-    public Integer getId() {return id;}
+    public Integer getId() {
+        return id;
+    }
 
-    public void setId(Integer id) {this.id = id;}
+    public String getNome() {
+        return nome;
+    }
 
-    public String getNome() {return nome;}
+    public String getDescricao() {
+        return descricao;
+    }
 
-    public void setNome(String nome) {this.nome = nome;}
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
 
-    public String getDescricao() {return descricao;}
+    public StatusAtividade getStatusAtividade() {
+        return statusAtividade;
+    }
 
-    public void setDescricao(String descricao) {this.descricao = descricao;}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public LocalDate getDataCriacao() {return dataCriacao;}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-    public void setDataCriacao(LocalDate dataCriacao) {this.dataCriacao = dataCriacao;}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
-    public StatusAtividade getStatusAtividade() {return statusAtividade;}
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
 
-    public void setStatusAtividade(StatusAtividade statusAtividade) {this.statusAtividade = statusAtividade;}
+    public void setStatusAtividade(StatusAtividade statusAtividade) {
+        this.statusAtividade = statusAtividade;
+    }
 
     @Override
     public boolean equals(Object o) {

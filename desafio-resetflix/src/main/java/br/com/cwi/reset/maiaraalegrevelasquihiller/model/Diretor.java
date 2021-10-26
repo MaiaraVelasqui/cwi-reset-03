@@ -20,8 +20,7 @@ public class Diretor {
     public Diretor() {
     }
 
-    public Diretor(Integer id, String nome, LocalDate dataNascimento, Integer anoInicioAtividade) {
-        this.id = id;
+    public Diretor(String nome, LocalDate dataNascimento, Integer anoInicioAtividade) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
         this.anoInicioAtividade = anoInicioAtividade;
@@ -43,6 +42,21 @@ public class Diretor {
         return anoInicioAtividade;
     }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public void setAnoInicioAtividade(Integer anoInicioAtividade) {
+        this.anoInicioAtividade = anoInicioAtividade;
+    }
 
     @Override
     public boolean equals(Object o) {
