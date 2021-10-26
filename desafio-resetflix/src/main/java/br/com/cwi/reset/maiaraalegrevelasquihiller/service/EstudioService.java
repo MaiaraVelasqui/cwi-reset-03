@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static java.util.Objects.isNull;
+
 public class EstudioService {
     private FakeDatabase fakeDatabase;
 
@@ -41,57 +43,43 @@ public class EstudioService {
         fakeDatabase.persisteEstudio(estudio);
     }
 
-    public List<Estudio> consultarEstudios() throws Exception {
-
-
-        final List<Estudio> estudios = fakeDatabase.recuperaEstudios();
-
-        if (estudios.isEmpty()) {
-            throw new ListaVaziaException(TipoDominioException.ESTUDIO.getSingular(), TipoDominioException.ESTUDIO.getPlural());
-        }
-
-        return estudios;
-    }
-
-    public List<Estudio> consultarEstudios(final String filtroNome) throws Exception {
+    public List<Estudio> consultarEstudios(String filtroNome) throws Exception {
         final List<Estudio> estudiosCadastrados = fakeDatabase.recuperaEstudios();
+        final List<Estudio> estudios = new ArrayList<>();
 
         if (estudiosCadastrados.isEmpty()) {
             throw new ListaVaziaException(TipoDominioException.ESTUDIO.getSingular(), TipoDominioException.ESTUDIO.getPlural());
         }
 
-        final List<Estudio> retorno = new ArrayList<>();
-
-        if (filtroNome != null) {
+        if (!isNull(filtroNome)) {
             for (Estudio estudio : estudiosCadastrados) {
-                final boolean containsFilter = estudio.getNome().toLowerCase(Locale.ROOT).contains(filtroNome.toLowerCase(Locale.ROOT));
-                if (containsFilter) {
-                    retorno.add(estudio);
+                if (estudio.getNome().toLowerCase(Locale.ROOT).contains(filtroNome.toLowerCase(Locale.ROOT))) {
+                    estudios.add(estudio);
                 }
             }
         } else {
-            retorno.addAll(estudiosCadastrados);
+            estudios.addAll(estudiosCadastrados);
         }
 
-        if (retorno.isEmpty()) {
-            throw new FiltroNomeNaoEncontrado("Estudio", filtroNome);
+        if (estudios.isEmpty()) {
+            throw new FiltroNomeNaoEncontrado("Estúdio", filtroNome);
         }
 
-        return retorno;
+        return estudios;
     }
 
-    public Estudio consultarEstudio(final Integer id) throws Exception {
-        if (id == null) {
+    public Estudio consultarEstudio(Integer id) throws Exception {
+        if (isNull(id)) {
             throw new IdNaoInformado();
         }
 
-        final List<Estudio> estudios = fakeDatabase.recuperaEstudios();
-
-        for (Estudio estudio : estudios) {
-            if (estudio.getId().equals(id)) {
-                return estudio;
-            }
-        }
-        throw new ConsultaIdInvalidoException(TipoDominioException.ESTUDIO.getSingular(), id);
+        return fakeDatabase.recuperaEstudios()
+                .stream().filter(e -> e.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() ->
+                        new ConsultaIdInvalidoException(
+                                TipoDominioException.ESTUDIO.getSingular(),
+                                id)
+                );
     }
 }

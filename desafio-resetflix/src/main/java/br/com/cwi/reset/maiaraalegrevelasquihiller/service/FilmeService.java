@@ -4,122 +4,162 @@ package br.com.cwi.reset.maiaraalegrevelasquihiller.service;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.FakeDatabase;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.exception.*;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.*;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.request.AtorRequest;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.FilmeRequest;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.response.AtorEmAtividade;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.validator.BasicInfoRequiredValidator;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.validator.FilmeValidacao;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+
+import static java.util.Objects.isNull;
+import static java.util.Optional.ofNullable;
 
 public class FilmeService {
 
      private FakeDatabase fakeDatabase;
-     private EstudioService estudioService;
      private DiretorService diretorService;
-
+     private EstudioService estudioService;
+     private PersonagemAtorService personagemAtorService;
 
      public FilmeService(FakeDatabase fakeDatabase) {
           this.fakeDatabase = fakeDatabase;
+          this.diretorService = new DiretorService(fakeDatabase);
           this.estudioService = new EstudioService(fakeDatabase);
+          this.personagemAtorService = new PersonagemAtorService(fakeDatabase);
      }
 
      public void criarFilme(FilmeRequest filmeRequest) throws Exception {
-          new FilmeValidacao().accept(filmeRequest);
+          final List<Filme> filmesCadastrados = fakeDatabase.recuperaFilmes();
 
-          Estudio estudio = estudioService.consultarEstudio(filmeRequest.getIdEstudio());
-          Diretor diretor = diretorService.consultarDiretor(filmeRequest.getIdDiretor());
+          final Integer idGerado = filmesCadastrados.size() + 1;
 
+          final Filme filme = new Filme(
+                  idGerado,
+                  ofNullable(filmeRequest.getNome()).orElseThrow(() -> new NomeNaoInformadoException()),
+                  ofNullable(filmeRequest.getAnoLancamento()).orElseThrow(() -> new AnoLancamentoNaoInformadoException()),
+                  ofNullable(filmeRequest.getCapaFilme()).orElseThrow(() -> new CapaFilmeNaoInformadaException()),
+                  ofNullable(filmeRequest.getGeneros()).orElseThrow(() -> new GeneroNaoInformadoException()),
+                  estudioService.consultarEstudio(filmeRequest.getIdEstudio()),
+                  diretorService.consultarDiretor(filmeRequest.getIdDiretor()),
+                  personagemAtorService.cadastrarPersonagensFilme(filmeRequest.getPersonagens()),
+                  ofNullable(filmeRequest.getResumo()).orElseThrow(() -> new ResumoNaoInformadoException())
+          );
 
-          public List<Filme> listarFilmes(final String nomeFilme, String nomeDiretor, String nomePersonagem, String nomeAtor) throws Exception {
-               final List<Filme> filmesCadastrados = fakeDatabase.recuperaFilmes();
-
-               if (filmesCadastrados.isEmpty()) {
-                    throw new ListaVaziaException(TipoDominioException.FILME.getSingular(), TipoDominioException.FILME.getPlural());
-               }
-
-               final List<Filme> retorno = new ArrayList<>();
-
-               if (filtroNome != null) {
-                    for (Filme filme : filmesCadastrados) {
-                         final boolean containsFilter = filme.getNome().toLowerCase(Locale.ROOT).contains(filtroNome.toLowerCase(Locale.ROOT));
-                         if (containsFilter) {
-                              retorno.add(filme);
-                         }
-                    }
-               } else {
-                    retorno.addAll(diretoresCadastrados);
-               }
-
-               if (retorno.isEmpty()) {
-                    throw new FiltroNomeNaoEncontrado("Diretor", filtroNome);
-               }
-
-               return retorno;
+          if (filme.getGeneros().isEmpty()) {
+               throw new NenhumGeneroInformadoException("Deve ser informado pelo menos um gênero para o cadastro do filme.");
           }
+
+          final Set<Genero> generoSet = new HashSet<>();
+
+          for (Genero genero : filme.getGeneros()) {
+               if (generoSet.contains(genero)) {
+                    throw new GeneroRepetidoException("Não é permitido informar o mesmo gênero mais de uma vez para o mesmo filme.");
+               } else {
+                    generoSet.add(genero);
+               }
+          }
+
+          fakeDatabase.persisteFilme(filme);
      }
 
+     public List<Filme> consultarFilmes(
+             String nomeFilme,
+             String nomeDiretor,
+             String nomePersonagem,
+             String nomeAtor) throws Exception {
+          final List<Filme> filmesCadastrados = fakeDatabase.recuperaFilmes();
 
+          if (filmesCadastrados.isEmpty()) {
+               throw new ListaVaziaException(TipoDominioException.FILME.getSingular(), TipoDominioException.FILME.getPlural());
+          }
 
-//     public List<AtorEmAtividade> listarAtoresEmAtividade(String filtroNome) throws Exception {
-//          final List<Ator> atoresCadastrados = fakeDatabase.recuperaAtores();
-//
-//          if (atoresCadastrados.isEmpty()) {
-//               throw new ListaVaziaException(TipoDominioException.ATOR.getSingular(), TipoDominioException.ATOR.getPlural());
-//          }
-//
-//          final List<AtorEmAtividade> retorno = new ArrayList<>();
-//
-//          if (filtroNome != null) {
-//               for (Ator ator : atoresCadastrados) {
-//                    final boolean containsFilter = ator.getNome().toLowerCase(Locale.ROOT).contains(filtroNome.toLowerCase(Locale.ROOT));
-//                    final boolean emAtividade = StatusCarreira.EM_ATIVIDADE.equals(ator.getStatusCarreira());
-//                    if (containsFilter && emAtividade) {
-//                         retorno.add(new AtorEmAtividade(ator.getId(), ator.getNome(), ator.getDataNascimento()));
-//                    }
-//               }
-//          } else {
-//               for (Ator ator : atoresCadastrados) {
-//                    final boolean emAtividade = StatusCarreira.EM_ATIVIDADE.equals(ator.getStatusCarreira());
-//                    if (emAtividade) {
-//                         retorno.add(new AtorEmAtividade(ator.getId(), ator.getNome(), ator.getDataNascimento()));
-//                    }
-//               }
-//          }
-//
-//          if (retorno.isEmpty()) {
-//               throw new FiltroNomeNaoEncontrado("Ator", filtroNome);
-//          }
-//
-//          return retorno;
+          final List<Filme> filtrarNomePersonagem = filtrarNomePersonagem(filmesCadastrados, nomePersonagem);
+          final List<Filme> filtrarNomeAtor = filtrarNomeAtor(filtrarNomePersonagem, nomeAtor);
+          final List<Filme> filtrarNomeDiretor = filtrarNomeDiretor(filtrarNomeAtor, nomeDiretor);
+          final List<Filme> filtroFinal = filtrarNomeFilme(filtrarNomeDiretor, nomeFilme);
+
+          if (filtroFinal.isEmpty()) {
+               throw new FilmeNaoEncontradoException(
+                       String.format(
+                               "Filme não encontrado com os filtros nomeFilme=%s, nomeDiretor=%s, nomePersonagem=%s, nomeAtor=%s, favor informar outros filtros.",
+                               nomeFilme,
+                               nomeDiretor,
+                               nomePersonagem,
+                               nomeAtor
+                       )
+               );
+          }
+
+          return filtroFinal;
      }
-//
-//     public Ator consultarAtor(Integer id) throws Exception {
-//          if (id == null) {
-//               throw new IdNaoInformado();
-//          }
-//
-//          final List<Ator> atores = fakeDatabase.recuperaAtores();
-//
-//          for (Ator ator : atores) {
-//               if (ator.getId().equals(id)) {
-//                    return ator;
-//               }
-//          }
-//
-//          throw new ConsultaIdInvalidoException(TipoDominioException.ATOR.getSingular(), id);
-//     }
-//
-//     public List<Ator> consultarAtores() throws Exception {
-//          final List<Ator> atores = fakeDatabase.recuperaAtores();
-//
-//          if (atores.isEmpty()) {
-//               throw new ListaVaziaException(TipoDominioException.ATOR.getSingular(), TipoDominioException.ATOR.getPlural());
-//          }
-//
-//          return atores;
-//     }
 
+     private List<Filme> filtrarNomeFilme(final List<Filme> listaOriginal, final String nome) {
+          if (isNull(nome)) {
+               return listaOriginal;
+          }
+
+          final List<Filme> filmeFiltrado = new ArrayList<>();
+
+          for (Filme filme : listaOriginal) {
+               if (filme.getNome().toLowerCase(Locale.ROOT).equalsIgnoreCase(nome.toLowerCase(Locale.ROOT))) {
+                    filmeFiltrado.add(filme);
+               }
+          }
+
+          return filmeFiltrado;
+     }
+
+     private List<Filme> filtrarNomeDiretor(final List<Filme> listaOriginal, final String nome) {
+          if (isNull(nome)) {
+               return listaOriginal;
+          }
+
+          final List<Filme> filmeFiltrado = new ArrayList<>();
+
+          for (Filme filme : listaOriginal) {
+               if (filme.getDiretor().getNome().toLowerCase(Locale.ROOT).equalsIgnoreCase(nome.toLowerCase(Locale.ROOT))) {
+                    filmeFiltrado.add(filme);
+               }
+          }
+
+          return filmeFiltrado;
+     }
+
+     private List<Filme> filtrarNomeAtor(final List<Filme> listaOriginal, final String nome) {
+          if (isNull(nome)) {
+               return listaOriginal;
+          }
+
+          final List<Filme> filmeFiltrado = new ArrayList<>();
+
+          for (Filme filme : listaOriginal) {
+               for (PersonagemAtor personagens : filme.getPersonagens()) {
+                    if (personagens.getAtor().getNome().toLowerCase(Locale.ROOT).equalsIgnoreCase(nome.toLowerCase(Locale.ROOT))) {
+                         filmeFiltrado.add(filme);
+                         break;
+                    }
+               }
+          }
+
+          return filmeFiltrado;
+     }
+
+     private List<Filme> filtrarNomePersonagem(final List<Filme> listaOriginal, final String nome) {
+          if (isNull(nome)) {
+               return listaOriginal;
+          }
+
+          final List<Filme> filmeFiltrado = new ArrayList<>();
+
+          for (Filme filme : listaOriginal) {
+               for (PersonagemAtor personagens : filme.getPersonagens()) {
+                    if (personagens.getNomePersonagem()
+                            .toLowerCase(Locale.ROOT)
+                            .equalsIgnoreCase(nome.toLowerCase(Locale.ROOT))
+                    ) {
+                         filmeFiltrado.add(filme);
+                         break;
+                    }
+               }
+          }
+
+          return filmeFiltrado;
+     }
+}

@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FilmeRequest {
     private String nome;
-    private LocalDate anoLancamento;
+    private Integer anoLancamento;
     private String capaFilme;
     private List<Genero> generos;
     private Integer idEstudio;
@@ -15,7 +15,7 @@ public class FilmeRequest {
     private String resumo;
     private List<PersonagemRequest> personagens;
 
-    public FilmeRequest(String nome, LocalDate anoLancamento, String capaFilme, List<Genero> generos, Integer idEstudio, Integer idDiretor, String resumo, List<PersonagemRequest> personagens, Integer idAtor, String nomePersonagem, String descricaoPersonagem, TipoAtuacao tipoAtuacao) {
+    public FilmeRequest(String nome, Integer anoLancamento, String capaFilme, List<Genero> generos, Integer idEstudio, Integer idDiretor, String resumo, List<PersonagemRequest> personagens, Integer idAtor, String nomePersonagem, String descricaoPersonagem, TipoAtuacao tipoAtuacao) {
         this.nome = nome;
         this.anoLancamento = anoLancamento;
         this.capaFilme = capaFilme;
@@ -30,7 +30,7 @@ public class FilmeRequest {
         return nome;
     }
 
-    public LocalDate getAnoLancamento() {
+    public Integer getAnoLancamento() {
         return anoLancamento;
     }
 

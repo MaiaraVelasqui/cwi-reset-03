@@ -22,13 +22,12 @@ import java.util.List;
         this.estudioService.criarEstudio(estudioRequest);
     }
 
-    @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<Estudio>consultarEstudios(@RequestParam String filtroNome)throws Exception{
         return this.estudioService.consultarEstudios(filtroNome);
     }
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/{id}")
+
+    @GetMapping(path= "/{id}")
     public Estudio consultarEstudio(@PathVariable Integer id) throws Exception{
         return this.estudioService.consultarEstudio(id);
     }

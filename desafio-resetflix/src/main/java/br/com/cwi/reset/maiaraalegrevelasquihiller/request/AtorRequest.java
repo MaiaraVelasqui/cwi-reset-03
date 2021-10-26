@@ -2,10 +2,15 @@ package br.com.cwi.reset.maiaraalegrevelasquihiller.request;
 
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.StatusCarreira;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 import java.time.LocalDate;
 
 public class AtorRequest {
+    @NotNull(message = "Campo obrigatório não informado. Favor informar o campo nome.")
     private String nome;
+    @NotNull(message = "Campo obrigatório não informado. Favor informar o campo dataNascimento.")
+    @Past(message = "teste mensagem futuro")
     private LocalDate dataNascimento;
     private StatusCarreira statusCarreira;
     private Integer anoInicioAtividade;
@@ -21,31 +26,15 @@ public class AtorRequest {
         return nome;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
     public LocalDate getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
-
-    public StatusCarreira getStatusCarreira() {
-        return statusCarreira;
-    }
-
-    public void setStatusCarreira(StatusCarreira statusCarreira) {
-        this.statusCarreira = statusCarreira;
-    }
+    public StatusCarreira getStatusCarreira() {return statusCarreira;}
 
     public Integer getAnoInicioAtividade() {
         return anoInicioAtividade;
     }
 
-    public void setAnoInicioAtividade(Integer anoInicioAtividade) {
-        this.anoInicioAtividade = anoInicioAtividade;
-    }
+
 }

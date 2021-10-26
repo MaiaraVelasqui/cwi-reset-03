@@ -6,8 +6,10 @@ import br.com.cwi.reset.maiaraalegrevelasquihiller.request.AtorRequest;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.response.AtorEmAtividade;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.service.AtorService;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,17 +27,17 @@ public class AtorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void criarAtor(@RequestBody AtorRequest atorRequest) throws Exception {
+    public void criarAtor(@RequestBody @Valid AtorRequest atorRequest) throws Exception {
         this.atorService.criarAtor(atorRequest);
     }
 
-    @GetMapping("/em_atividade")
+    @GetMapping(path= "/em_atividade")
     @ResponseStatus(HttpStatus.OK)
     public List<AtorEmAtividade> listarAtoresEmAtividade(@RequestParam String filtroNome) throws Exception {
         return this.atorService.listarAtoresEmAtividade(filtroNome);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path= "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Ator consultarAtor(@PathVariable Integer id) throws Exception{
        return this.atorService.consultarAtor(id);
