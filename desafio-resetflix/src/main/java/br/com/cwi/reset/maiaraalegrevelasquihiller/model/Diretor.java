@@ -26,6 +26,9 @@ public class Diretor {
         this.anoInicioAtividade = anoInicioAtividade;
     }
 
+    public Diretor(Integer idGerado, String nome, LocalDate dataNascimento, Integer anoInicioAtividade) {
+    }
+
     public Integer getId() {
         return id;
     }

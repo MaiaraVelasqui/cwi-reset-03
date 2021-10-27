@@ -1,37 +1,38 @@
 package br.com.cwi.reset.maiaraalegrevelasquihiller.service;
 
 
-import br.com.cwi.reset.maiaraalegrevelasquihiller.FakeDatabase;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.exception.*;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.model.*;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Filme;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Genero;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.model.PersonagemAtor;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.repository.FilmeRepository;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.FilmeRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 import static java.util.Objects.isNull;
 import static java.util.Optional.ofNullable;
 
+@Service
 public class FilmeService {
-
-     private FakeDatabase fakeDatabase;
+     @Autowired
+     private FilmeRepository filmeRepository;
+     
+     @Autowired
      private DiretorService diretorService;
+     
+     @Autowired
      private EstudioService estudioService;
+     
+     @Autowired
      private PersonagemAtorService personagemAtorService;
 
-     public FilmeService(FakeDatabase fakeDatabase) {
-          this.fakeDatabase = fakeDatabase;
-          this.diretorService = new DiretorService(fakeDatabase);
-          this.estudioService = new EstudioService(fakeDatabase);
-          this.personagemAtorService = new PersonagemAtorService(fakeDatabase);
-     }
-
      public void criarFilme(FilmeRequest filmeRequest) throws Exception {
-          final List<Filme> filmesCadastrados = fakeDatabase.recuperaFilmes();
-
-          final Integer idGerado = filmesCadastrados.size() + 1;
+          final List<Filme> filmesCadastrados = (List<Filme>) filmeRepository.findAll();
 
           final Filme filme = new Filme(
-                  idGerado,
                   ofNullable(filmeRequest.getNome()).orElseThrow(() -> new NomeNaoInformadoException()),
                   ofNullable(filmeRequest.getAnoLancamento()).orElseThrow(() -> new AnoLancamentoNaoInformadoException()),
                   ofNullable(filmeRequest.getCapaFilme()).orElseThrow(() -> new CapaFilmeNaoInformadaException()),
@@ -56,7 +57,7 @@ public class FilmeService {
                }
           }
 
-          fakeDatabase.persisteFilme(filme);
+          filmeRepository.save(filme);
      }
 
      public List<Filme> consultarFilmes(
@@ -64,7 +65,7 @@ public class FilmeService {
              String nomeDiretor,
              String nomePersonagem,
              String nomeAtor) throws Exception {
-          final List<Filme> filmesCadastrados = fakeDatabase.recuperaFilmes();
+          final List<Filme> filmesCadastrados = (List<Filme>) filmeRepository.findAll();
 
           if (filmesCadastrados.isEmpty()) {
                throw new ListaVaziaException(TipoDominioException.FILME.getSingular(), TipoDominioException.FILME.getPlural());

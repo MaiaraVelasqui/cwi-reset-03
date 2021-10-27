@@ -1,42 +1,42 @@
 package br.com.cwi.reset.maiaraalegrevelasquihiller.service;
 
+import br.com.cwi.reset.maiaraalegrevelasquihiller.repository.PersonagemAtorRepository;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.PersonagemRequest;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.FakeDatabase;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.exception.AtorPersonagemRepetidoException;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Ator;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.PersonagemAtor;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.validator.PersonagemValidacao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Service
 public class PersonagemAtorService {
-
-    private FakeDatabase fakeDatabase;
+    
+    @Autowired
+    private PersonagemAtorRepository personagemAtorRepository;
+    
+    @Autowired
     private AtorService atorService;
-
-    public PersonagemAtorService(FakeDatabase fakeDatabase) {
-        this.fakeDatabase = fakeDatabase;
-        this.atorService = new AtorService(fakeDatabase);
-    }
 
     public PersonagemAtor cadastrarPersonagemAtor(PersonagemRequest personagemRequest) throws Exception {
         new PersonagemValidacao().accept(personagemRequest);
 
-        final Integer idGerado = fakeDatabase.recuperaPersonagens().size() + 1;
         final Ator ator = atorService.consultarAtor(personagemRequest.getIdAtor());
 
-        final PersonagemAtor personagemAtor = new PersonagemAtor(idGerado, ator, personagemRequest.getNomePersonagem(), personagemRequest.getDescricaoPersonagem(), personagemRequest.getTipoAtuacao());
+        final PersonagemAtor personagemAtor = new PersonagemAtor(ator, personagemRequest.getNomePersonagem(), personagemRequest.getDescricaoPersonagem(), personagemRequest.getTipoAtuacao());
 
-        fakeDatabase.persistePersonagem(personagemAtor);
+        personagemAtorRepository.save(personagemAtor);
 
         return personagemAtor;
     }
 
     public List<PersonagemAtor> consultarPersonagemAtor(String nome) throws Exception {
-        return fakeDatabase.recuperaPersonagens();
+        return (List<PersonagemAtor>) personagemAtorRepository.findAll();
     }
 
     private void validarPersonagensAtoresFilme(final List<PersonagemRequest> personagens) throws Exception {

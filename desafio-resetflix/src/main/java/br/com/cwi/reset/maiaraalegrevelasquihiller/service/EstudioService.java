@@ -1,14 +1,12 @@
 package br.com.cwi.reset.maiaraalegrevelasquihiller.service;
 
-import br.com.cwi.reset.maiaraalegrevelasquihiller.FakeDatabase;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.exception.*;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Ator;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Diretor;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Estudio;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.request.AtorRequest;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.repository.EstudioRepository;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.EstudioRequest;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.validator.BasicInfoRequiredValidator;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.validator.EstudioValidacao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,18 +14,17 @@ import java.util.Locale;
 
 import static java.util.Objects.isNull;
 
+@Service
 public class EstudioService {
-    private FakeDatabase fakeDatabase;
-
-    public EstudioService(FakeDatabase fakeDatabase) {
-        this.fakeDatabase = fakeDatabase;
-    }
+    
+    @Autowired
+    private EstudioRepository estudioRepository;
 
     public void criarEstudio(EstudioRequest estudioRequest) throws Exception {
         new EstudioValidacao().accept(estudioRequest);
 
 
-        List<Estudio> estudiosCadastrados = fakeDatabase.recuperaEstudios();
+        List<Estudio> estudiosCadastrados = (List<Estudio>) estudioRepository.findAll();
 
         for (Estudio estudioCadastrado : estudiosCadastrados) {
             if (estudioCadastrado.getNome().equalsIgnoreCase(estudioRequest.getNome())) {
@@ -40,11 +37,11 @@ public class EstudioService {
         Estudio estudio = new Estudio(idGerado, estudioRequest.getNome(), estudioRequest.getDescricao(), estudioRequest.getDataCriacao(), estudioRequest.getStatusAtividade());
 
 
-        fakeDatabase.persisteEstudio(estudio);
+        estudioRepository.save(estudio);
     }
 
     public List<Estudio> consultarEstudios(String filtroNome) throws Exception {
-        final List<Estudio> estudiosCadastrados = fakeDatabase.recuperaEstudios();
+        final List<Estudio> estudiosCadastrados = (List<Estudio>) estudioRepository.findAll();
         final List<Estudio> estudios = new ArrayList<>();
 
         if (estudiosCadastrados.isEmpty()) {
@@ -73,7 +70,8 @@ public class EstudioService {
             throw new IdNaoInformado();
         }
 
-        return fakeDatabase.recuperaEstudios()
+        List<Estudio> all = (List<Estudio>) estudioRepository.findAll();
+        return all
                 .stream().filter(e -> e.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() ->

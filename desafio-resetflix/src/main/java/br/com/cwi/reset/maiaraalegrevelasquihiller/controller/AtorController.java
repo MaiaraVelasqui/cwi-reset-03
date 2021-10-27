@@ -1,29 +1,22 @@
 package br.com.cwi.reset.maiaraalegrevelasquihiller.controller;
 
-import br.com.cwi.reset.maiaraalegrevelasquihiller.FakeDatabase;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Ator;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.AtorRequest;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.response.AtorEmAtividade;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.service.AtorService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/atores")
-
 public class AtorController {
 
+    @Autowired
     private AtorService atorService;
-
-    public AtorController() {
-        this.atorService = new AtorService(FakeDatabase.getInstance());
-    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
