@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,7 +19,7 @@ public class EstudioController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public void criarEstudio(@RequestBody EstudioRequest estudioRequest) throws Exception{
+    public void criarEstudio(@RequestBody @Valid EstudioRequest estudioRequest) throws Exception{
         this.estudioService.criarEstudio(estudioRequest);
     }
 

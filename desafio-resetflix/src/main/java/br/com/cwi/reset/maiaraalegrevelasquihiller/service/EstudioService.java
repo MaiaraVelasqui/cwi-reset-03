@@ -4,7 +4,6 @@ import br.com.cwi.reset.maiaraalegrevelasquihiller.exception.*;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Estudio;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.repository.EstudioRepository;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.EstudioRequest;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.validator.EstudioValidacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,6 @@ public class EstudioService {
     private EstudioRepository estudioRepository;
 
     public void criarEstudio(EstudioRequest estudioRequest) throws Exception {
-        new EstudioValidacao().accept(estudioRequest);
 
 
         List<Estudio> estudiosCadastrados = (List<Estudio>) estudioRepository.findAll();

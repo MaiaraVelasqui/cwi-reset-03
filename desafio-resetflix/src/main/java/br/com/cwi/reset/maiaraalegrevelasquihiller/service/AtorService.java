@@ -81,15 +81,9 @@ public class AtorService {
                throw new IdNaoInformado();
           }
 
-          final List<Ator> atores = (List<Ator>) atorRepository.findAll();
+          return atorRepository.findById(id).orElseThrow(()
+                  -> new ConsultaIdInvalidoException(TipoDominioException.ATOR.getSingular(), id));
 
-          for (Ator ator : atores) {
-               if (ator.getId().equals(id)) {
-                    return ator;
-               }
-          }
-
-          throw new ConsultaIdInvalidoException(TipoDominioException.ATOR.getSingular(), id);
      }
 
      public List<Ator> consultarAtores() throws Exception {

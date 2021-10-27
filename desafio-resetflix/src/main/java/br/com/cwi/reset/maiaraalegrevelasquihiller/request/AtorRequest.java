@@ -9,10 +9,15 @@ import java.time.LocalDate;
 public class AtorRequest {
     @NotNull(message = "Campo obrigatório não informado. Favor informar o campo nome.")
     private String nome;
+
     @NotNull(message = "Campo obrigatório não informado. Favor informar o campo dataNascimento.")
-    @Past(message = "teste mensagem futuro")
+    @Past(message = "Não é possível cadastrar atores não nascidos.")
     private LocalDate dataNascimento;
+
+    @NotNull(message = "Campo obrigatório não informado. Favor informar o campo statusCarreira")
     private StatusCarreira statusCarreira;
+
+    @NotNull(message = "Ano inicio atividade não informado")
     private Integer anoInicioAtividade;
 
     public AtorRequest(String nome, LocalDate dataNascimento, StatusCarreira statusCarreira, Integer anoInicioAtividade) {

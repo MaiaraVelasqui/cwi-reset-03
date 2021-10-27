@@ -2,6 +2,7 @@ package br.com.cwi.reset.maiaraalegrevelasquihiller.service;
 
 
 import br.com.cwi.reset.maiaraalegrevelasquihiller.exception.*;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Ator;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Diretor;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.repository.DiretorRepository;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.DiretorRequest;
@@ -78,5 +79,15 @@ public class DiretorService {
           }
 
           throw new ConsultaIdInvalidoException(TipoDominioException.DIRETOR.getSingular(), id);
+     }
+
+    public List<Diretor> consultarDiretores() throws Exception {
+          final List<br.com.cwi.reset.maiaraalegrevelasquihiller.model.Diretor> diretores = (List<br.com.cwi.reset.maiaraalegrevelasquihiller.model.Diretor>) diretorRepository.findAll();
+
+          if (diretores.isEmpty()) {
+               throw new ListaVaziaException(TipoDominioException.DIRETOR.getSingular(), TipoDominioException.DIRETOR.getPlural());
+          }
+
+          return diretores;
      }
 }

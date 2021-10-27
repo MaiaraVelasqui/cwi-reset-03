@@ -10,15 +10,7 @@ import br.com.cwi.reset.maiaraalegrevelasquihiller.request.PersonagemRequest;
 public class PersonagemValidacao {
     public void accept(PersonagemRequest personagemRequest) throws Exception {
 
-        if (personagemRequest.getIdAtor() == null) {
-            throw new IdNaoInformado();
-        }
-        if (personagemRequest.getNomePersonagem() == null) {
-            throw new NomeNaoInformadoException();
-        }
-        if (personagemRequest.getDescricaoPersonagem() == null) {
-            throw new DescricaoNaoInformadaException();
-        }
+
         if (personagemRequest.getTipoAtuacao() == null) {
             throw new TipoAtuacaoNaoInformadoException();
         }
