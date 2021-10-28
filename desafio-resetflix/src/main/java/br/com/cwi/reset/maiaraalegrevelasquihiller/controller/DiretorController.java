@@ -41,4 +41,16 @@ public class DiretorController {
     public List<Diretor> listarDiretores() throws Exception{
         return this.diretorService.consultarDiretores();
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void atualizarDiretor(@PathVariable Integer id, @Valid @RequestBody DiretorRequest diretorRequest) throws Exception {
+        this.diretorService.atualizarDiretor(id, diretorRequest);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void removerDiretores(@PathVariable Integer id) throws Exception {
+        this.diretorService.removerDiretores(id);
+    }
 }

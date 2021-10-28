@@ -5,7 +5,6 @@ import br.com.cwi.reset.maiaraalegrevelasquihiller.request.PersonagemRequest;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.exception.AtorPersonagemRepetidoException;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Ator;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.PersonagemAtor;
-import br.com.cwi.reset.maiaraalegrevelasquihiller.validator.PersonagemValidacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,6 @@ public class PersonagemAtorService {
     private AtorService atorService;
 
     public PersonagemAtor cadastrarPersonagemAtor(PersonagemRequest personagemRequest) throws Exception {
-        new PersonagemValidacao().accept(personagemRequest);
 
         final Ator ator = atorService.consultarAtor(personagemRequest.getIdAtor());
 
@@ -44,20 +42,7 @@ public class PersonagemAtorService {
         final Set<PersonagemRequest> personagemRequestSet = new HashSet<>();
 
         for (PersonagemRequest personagemRequest : personagens) {
-            new PersonagemValidacao().accept(personagemRequest);
 
-            /**
-             * A linha: "if (personagemRequestSet.contains(personagemRequest))"
-             *
-             * Cai na implementação do Set abaixo
-             * Implementação macro
-             * https://docs.oracle.com/javase/7/docs/api/java/util/Set.html#contains(java.lang.Object)
-             *
-             * Que por sua vez chama o equals da classe da chave
-             * Na prática:
-             * PersonagemRequest.equals(PersonagemRequest);
-             * {@link br.com.cwi.reset.josealencar.request.PersonagemRequest#equals(Object)}
-             */
             if (personagemRequestSet.contains(personagemRequest)) {
                 throw new AtorPersonagemRepetidoException("Não é permitido informar o mesmo ator/personagem mais de uma vez para o mesmo filme.");
             } else {

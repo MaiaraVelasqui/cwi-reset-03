@@ -2,6 +2,7 @@ package br.com.cwi.reset.maiaraalegrevelasquihiller.service;
 
 
 import br.com.cwi.reset.maiaraalegrevelasquihiller.exception.*;
+import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Diretor;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Filme;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Genero;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.PersonagemAtor;
@@ -91,6 +92,10 @@ public class FilmeService {
           return filtroFinal;
      }
 
+     public List<Filme> consultarFilmes() {
+          return (List<Filme>) filmeRepository.findAll();
+     }
+
      private List<Filme> filtrarNomeFilme(final List<Filme> listaOriginal, final String nome) {
           if (isNull(nome)) {
                return listaOriginal;
@@ -163,4 +168,22 @@ public class FilmeService {
 
           return filmeFiltrado;
      }
+
+    public void removerFilme(Integer id) throws Exception {
+         Filme filme = consultarFilme(id);
+         if (filme == null) {
+              throw new FilmeNaoExistenteException("Filme com o id " + id + " não existe");
+         }
+         filmeRepository.delete(filme);
+    }
+
+     private Filme consultarFilme(Integer id) throws IdNaoInformado, ConsultaIdInvalidoException {
+          if (id == null) {
+          throw new IdNaoInformado();
+     }
+          return filmeRepository.findById(id).orElseThrow(()
+                  -> new ConsultaIdInvalidoException(TipoDominioException.FILME.getSingular(), id));
+
+     }
+
 }

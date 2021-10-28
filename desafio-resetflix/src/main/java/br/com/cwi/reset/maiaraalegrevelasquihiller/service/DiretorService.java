@@ -90,4 +90,27 @@ public class DiretorService {
 
           return diretores;
      }
+
+     public void removerDiretores(Integer id) throws Exception {
+          Diretor diretor = consultarDiretor(id);
+          if (diretor == null) {
+               throw new DiretorNaoExistenteException("Diretor com o id " + consultarDiretor(id) + " não existe");
+          }
+          diretorRepository.delete(diretor);
+     }
+
+     public void atualizarDiretor(Integer id, DiretorRequest diretorRequest) throws Exception {
+          Diretor diretor = consultarDiretor(id);
+          if (diretor == null) {
+               throw new DiretorNaoExistenteException("Ator com o id " + id + " não existe");
+          }
+          diretor.setNome(diretorRequest.getNome());
+          diretor.setAnoInicioAtividade(diretorRequest.getAnoInicioAtividade());
+          diretor.setDataNascimento(diretorRequest.getDataNascimento());
+
+
+          diretorRepository.save(diretor);
+     }
+
 }
+

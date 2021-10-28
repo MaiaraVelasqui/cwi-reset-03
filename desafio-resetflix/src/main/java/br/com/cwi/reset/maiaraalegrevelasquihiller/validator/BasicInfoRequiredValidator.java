@@ -8,8 +8,6 @@ public class BasicInfoRequiredValidator {
 
     public void accept(final String nome, final LocalDate dataNascimento, final Integer anoInicioAtividade, final TipoDominioException tipoDominioException) throws Exception {
 
-
-
         if (nome.split(" ").length < 2) {
             throw new NomeSobrenomeObrigatorioException(tipoDominioException.getSingular());
         }

@@ -95,4 +95,25 @@ public class AtorService {
 
           return atores;
      }
+
+     public void removerAtor(Integer id) throws Exception {
+          Ator ator = consultarAtor(id);
+          if (ator == null) {
+               throw new AtorNaoExistenteException("Ator com o id " + consultarAtor(id) + " não existe");
+          }
+          atorRepository.delete(ator);
+     }
+
+     public void atualizarAtor(Integer id, AtorRequest atorRequest)throws Exception{
+          Ator ator = consultarAtor(id);
+          if (ator == null) {
+               throw new AtorNaoExistenteException("Ator com o id " + id + " não existe");
+          }
+          ator.setNome(atorRequest.getNome());
+          ator.setAnoInicioAtividade(atorRequest.getAnoInicioAtividade());
+          ator.setDataNascimento(atorRequest.getDataNascimento());
+          ator.setStatusCarreira(atorRequest.getStatusCarreira());
+
+          atorRepository.save(ator);
+     }
 }

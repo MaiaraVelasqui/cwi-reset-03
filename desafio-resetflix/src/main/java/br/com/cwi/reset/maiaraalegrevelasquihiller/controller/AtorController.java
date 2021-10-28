@@ -6,6 +6,7 @@ import br.com.cwi.reset.maiaraalegrevelasquihiller.response.AtorEmAtividade;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.service.AtorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -39,6 +40,18 @@ public class AtorController {
     @GetMapping
     public List<Ator> consultarAtores() throws Exception{
         return this.atorService.consultarAtores();
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void atualizarAtor(@PathVariable Integer id, @RequestBody @Valid AtorRequest atorRequest)throws Exception{
+        this.atorService.atualizarAtor(id, atorRequest);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void removerAtor(@PathVariable Integer id) throws Exception {
+        this.atorService.removerAtor(id);
     }
 }
 

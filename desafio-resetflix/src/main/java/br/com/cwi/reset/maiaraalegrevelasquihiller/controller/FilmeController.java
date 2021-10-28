@@ -1,5 +1,6 @@
 package br.com.cwi.reset.maiaraalegrevelasquihiller.controller;
 
+import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Diretor;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.model.Filme;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.request.FilmeRequest;
 import br.com.cwi.reset.maiaraalegrevelasquihiller.service.FilmeService;
@@ -23,13 +24,23 @@ public class FilmeController {
     this.filmeService.criarFilme(filmeRequest);
 }
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
+    @GetMapping(path= "/filtro")
     public List<Filme> consultarFilmes(@RequestParam String nomeFilme,
                                        @RequestParam String nomeDiretor,
                                        @RequestParam String nomePersonagem,
                                        @RequestParam String nomeAtor) throws Exception {
     return filmeService.consultarFilmes(nomeFilme, nomeDiretor, nomePersonagem, nomeAtor);
-}
+    }
 
+    @GetMapping
+    public List<Filme> consultarFilmes() throws Exception{
+        return this.filmeService.consultarFilmes();
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void removerFilme(@PathVariable Integer id) throws Exception {
+        this.filmeService.removerFilme(id);
+    }
 
 }
